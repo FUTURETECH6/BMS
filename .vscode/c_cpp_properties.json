@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${vcpkgRoot}/x64-osx/include",
+                "${workspaceFolder}/include/",
+                "${workspaceFolder}/",
+                "${workspaceFolder}/Release",
+                "/usr/local/opt/qt/include",
+                "/usr/local/opt/qt/include/QtCore",
+                "/usr/local/opt/qt/include/QtGui",
+                "/usr/local/Cellar/mysql/8.0.19/include/mysql/"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
