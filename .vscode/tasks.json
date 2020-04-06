@@ -10,7 +10,8 @@
             "args": [
                 "-Wall",
                 "-g",
-                "${workspaceFolder}/Src/*",
+                "${workspaceFolder}/Src/test.cpp",
+                "${workspaceFolder}/Src/Database.cpp",
                 "-std=c++11",
                 "-I${workspaceFolder}/include/",
                 "-I/usr/local/Cellar/mysql/8.0.19/include/mysql/",

@@ -1,5 +1,6 @@
 #include "Database.h"
 
+#include <QMessageBox>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -88,7 +89,8 @@ bool Database::createDB() {
     if (mysql_query(mysql, command.c_str()))  // Create table record
         return false;
 
-    command = "insert into admin values('', '', NULL, NULL)";
+    command =
+        "insert into admin values('root', '" + rootPasswd + "', NULL, NULL)";
     if (mysql_query(mysql, command.c_str()))  // Insert a basic admin account
         return false;
 
@@ -133,7 +135,7 @@ bool Database::login(string username, string passwd) {
         return false;
     }
 }
-bool Database::logout() {
+void Database::logout() {
     curAdmin = "";
 }
 
@@ -156,11 +158,10 @@ bool Database::insertBook(string pwd) {
     fp.open(pwd);
     if (fp.fail())
         return 0;
-    while (!fp.eof()) {
-        string input;
+    string input = "init";
+    while (!fp.eof() || input == "") {
         getline(fp, input);
         string LF;
-        fp >> LF;
         string command = "insert into book values" + input;
         mysql_query(mysql, command.c_str());
     }
@@ -229,7 +230,7 @@ vector<Book> *Database::queryBook(string attribute, string value,
 vector<Book> *Database::queryBook(string attribute, double lower, double upper,
                                   string orderby, bool isAsc) {
     if (curAdmin == "")
-        return NULL;             // Check if is logged in
+        return NULL;  // Check if is logged in
     string command = "select * from book where " + attribute +
                      " >= " + to_string(lower) + " and " + attribute +
                      " <= " + to_string(upper) + " order by " + orderby +
@@ -237,15 +238,13 @@ vector<Book> *Database::queryBook(string attribute, double lower, double upper,
     mysql_query(mysql, command.c_str());
     return res2Ptr(mysql_store_result(mysql));
 }
-vector<Book> *Database::queryBook(string card_id) {
+string Database::queryBook(string BookID) {
     if (curAdmin == "")
         return NULL;  // Check if is logged in
-    string command =
-        " select * from book where BookID in(select BookID from record "
-        "where CardID = '" +
-        card_id + "' and RetDate is NULL)";
+    string command = "select Title from book where BookID = " + BookID;
     mysql_query(mysql, command.c_str());
-    return res2Ptr(mysql_store_result(mysql));
+    MYSQL_RES *result = mysql_store_result(mysql);
+    return mysql_fetch_row(result)[0];
 }
 /*
  * Convert MYSQL_RES to vector
@@ -254,7 +253,7 @@ vector<Book> *Database::res2Ptr(MYSQL_RES *result) {
     if (result == NULL)
         return NULL;
     int rowcount = mysql_num_rows(result);  //获取行数
-    rowcount     = min(rowcount, 50);       //取前50条
+    // rowcount     = min(rowcount, 50);       //取前50条
 
     // Book *res     = new Book[rowcount + 1];
     static vector<Book> ret;
@@ -272,7 +271,7 @@ vector<Book> *Database::res2Ptr(MYSQL_RES *result) {
  * @Param: BID for book to be borrowed, and CID for card to be used
  * @RetValue: prompt
  */
-string Database::borBook(string BookID, string CardID) {
+string Database::borBook(string BookID, string CardID, QWidget *ui) {
     if (curAdmin == "")
         return "Not Logged In\n";  // Check if is logged in
 
@@ -285,6 +284,13 @@ string Database::borBook(string BookID, string CardID) {
     MYSQL_ROW row = mysql_fetch_row(result);  // Get Results
     if (stoi(row[0]) == 0)
         return "No Stock\n";
+
+    QString quesIn =
+        QString::fromStdString("确定要借 " + queryBook(BookID) + " 吗？");
+    auto confirm = QMessageBox::question(ui, "", quesIn);
+    // QMessageBox::warning(ui, "", QString::number(confirm));
+    if (confirm == 65536)
+        return "Canceled\n";
 
     command = "update book set Stock = Stock - 1 where BookID = '" + BookID +
               "'";  // Minus stock by 1
@@ -300,7 +306,7 @@ string Database::borBook(string BookID, string CardID) {
     command = "insert into record values( '" + CardID + "',  '" + BookID +
               "', " + BorrowDate + ", NULL, '" + curAdmin + "')";
     if (mysql_query(mysql, command.c_str()))
-        return "Borrow Failed\n";
+        return "ERROR\n";
     return "Borrow Successfully\n";
 }
 
@@ -309,7 +315,7 @@ string Database::borBook(string BookID, string CardID) {
  * @Param: BID for book to be returned, and CID for card to be used
  * @RetValue: prompt
  */
-string Database::retBook(string BookID, string CardID) {
+string Database::retBook(string BookID, string CardID, QWidget *ui) {
     if (curAdmin == "")
         return "Not Logged In\n";  // Check if is logged in
 
@@ -317,6 +323,13 @@ string Database::retBook(string BookID, string CardID) {
                      BookID + "'";  //库存减一
     if (mysql_query(mysql, command.c_str()))
         return "Book Info Error\n";
+
+    QString quesIn =
+        QString::fromStdString("确定要还 " + queryBook(BookID) + " 吗？");
+    auto confirm = QMessageBox::question(ui, "", quesIn);
+    // QMessageBox::warning(ui, "", QString::number(confirm));
+    if (confirm == 65536)
+        return "Canceled\n";
 
     string RetDate;
     time_t now = time(0);
@@ -328,7 +341,7 @@ string Database::retBook(string BookID, string CardID) {
               CardID + "' and BookID = '" + BookID +
               "' and RetDate is NULL limit 1";
     if (mysql_query(mysql, command.c_str()))
-        return "Return Failed\n";
+        return "ERROR\n";
     return "Return Successfully\n";
 }
 

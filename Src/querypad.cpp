@@ -15,19 +15,21 @@ QueryPad::~QueryPad() {
     delete ui;
 }
 
-void QueryPad::on_pushBottoon_accepted() {
+void QueryPad::on_buttonBox_accepted() {
     QString raw_attr    = ui->attr->currentText();
     QString raw_orderby = ui->orderby->currentText();
     string attr         = strMap(raw_attr);
     string orderby      = strMap(raw_orderby);
     vector<Book> *ptr;
+
     if (attr == "Year" || attr == "Price") {
         double lower = QInputDialog::getDouble(this, "", "请输入区间下界");
         double upper = QInputDialog::getDouble(this, "", "请输入区间上界");
         ptr          = myDB.queryBook(attr, lower, upper, orderby);
     } else {
-        string keyword = QInputDialog::getText(this, "", "请输入关键字").toStdString();
-        ptr            = myDB.queryBook(attr, keyword, orderby);
+        string keyword =
+            QInputDialog::getText(this, "", "请输入关键字").toStdString();
+        ptr = myDB.queryBook(attr, keyword, orderby);
     }
     if (ptr->size() == 0) {
         QMessageBox::warning(this, "", "没有找到你要的书");
@@ -35,11 +37,11 @@ void QueryPad::on_pushBottoon_accepted() {
     }
     delete itemList;
     resetTable();
-    for (auto i = 0; i < ptr->size(); i++) {
+    for (auto i = 0; i < (int)ptr->size(); i++) {
         displayLine(i, (*ptr)[i]);
     }
 }
-void QueryPad::on_pushBottoon_rejected() {
+void QueryPad::on_buttonBox_rejected() {
     this->close();
 }
 
@@ -52,15 +54,16 @@ void QueryPad::displayLine(int &row, Book &book) {
                       new QStandardItem(QString::fromStdString(book.Title)));
     itemList->setItem(row, 3,
                       new QStandardItem(QString::fromStdString(book.Press)));
-    itemList->setItem(row, 4, new QStandardItem(book.Year));
+    itemList->setItem(row, 4, new QStandardItem(QString::number(book.Year)));
     itemList->setItem(row, 5,
                       new QStandardItem(QString::fromStdString(book.Author)));
-    itemList->setItem(row, 6, new QStandardItem(book.Price));
-    itemList->setItem(row, 7, new QStandardItem(book.Total));
-    itemList->setItem(row, 8, new QStandardItem(book.Stock));
+    itemList->setItem(row, 6, new QStandardItem(QString::number(book.Price)));
+    itemList->setItem(row, 7, new QStandardItem(QString::number(book.Total)));
+    itemList->setItem(row, 8, new QStandardItem(QString::number(book.Stock)));
 }
 
-string QueryPad::strMap(QString &raw) {
+string QueryPad::strMap(QString &rawQ) {
+    string raw = rawQ.toStdString();
     if (raw == "类别")
         return "Category";
     else if (raw == "书名")
@@ -73,6 +76,7 @@ string QueryPad::strMap(QString &raw) {
         return "Author";
     else if (raw == "价格")
         return "Price";
+    return "";
 }
 
 void QueryPad::resetTable() {
@@ -86,5 +90,5 @@ void QueryPad::resetTable() {
     itemList->setHorizontalHeaderItem(6, new QStandardItem("价格"));
     itemList->setHorizontalHeaderItem(7, new QStandardItem("总藏书量"));
     itemList->setHorizontalHeaderItem(8, new QStandardItem("库存"));
-    ui->resTable->setModel(itemList);  //将Model绑定到View
+    ui->resTable->setModel(itemList);
 }

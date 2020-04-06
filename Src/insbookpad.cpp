@@ -16,12 +16,12 @@ insBookPad::insBookPad(QWidget *parent)
     QRegExp rgInt("^(0|[1-9][0-9]*)$");  //正则对象，只能输入正整数
     QRegExpValidator *vaInt =
         new QRegExpValidator(rgInt, this);  //动态创建正则检验器并绑定正则对象
-    this->ui->Year->setValidator(vaInt);   //设置文本框的检验器
-    this->ui->Total->setValidator(vaInt);  //设置文本框的检验器
+    ui->Year->setValidator(vaInt);   //设置文本框的检验器
+    ui->Total->setValidator(vaInt);  //设置文本框的检验器
 
     QRegExp rgFloat("^[0-9]+(.[0-9]{2})?$");  //正则表达式，只能输入正浮点数
     QRegExpValidator *vaFloat = new QRegExpValidator(rgFloat, this);
-    this->ui->Price->setValidator(vaFloat);
+    ui->Price->setValidator(vaFloat);
 
     //    QRegExp rgNonEmpty("\\S");
     //    QRegExpValidator *vaStr = new QRegExpValidator(rgNonEmpty, this);
@@ -30,6 +30,7 @@ insBookPad::insBookPad(QWidget *parent)
     //    this->ui->Title->setValidator(vaStr);
     //    this->ui->Press->setValidator(vaStr);
     //    this->ui->Author->setValidator(vaStr);
+    ui->BookID->setFocus();
 }
 
 insBookPad::~insBookPad() {

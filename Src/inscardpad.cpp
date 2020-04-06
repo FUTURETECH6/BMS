@@ -10,6 +10,7 @@ extern Database myDB;
 insCardPad::insCardPad(QWidget *parent)
     : QDialog(parent), ui(new Ui::insCardPad) {
     ui->setupUi(this);
+    ui->CardID->setFocus();
 }
 
 insCardPad::~insCardPad() {

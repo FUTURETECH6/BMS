@@ -1,6 +1,7 @@
 #ifndef DATABASH_H
 #define DATABASH_H
 
+#include <QWidget>
 #include <iostream>
 #include <mysql.h>
 
@@ -145,7 +146,7 @@ class Database {
     void freeRes();
     void error_info();
     bool login(string username, string passwd);
-    bool logout();
+    void logout();
 
     // Admin
     bool insertBook(Book);
@@ -159,20 +160,21 @@ class Database {
                             string orderby);  // Default: order by ID
     vector<Book> *queryBook(string attribute, double lower, double upper,
                             string orderby, bool isAsc = 0);  // ASC
-    vector<Book> *queryBook(string CardID);  // Find all books borrowed by CID
+    string queryBook(string BookID);  // Find Title of the book
     vector<Book> *res2Ptr(MYSQL_RES *result);
 
     // BorRet
-    string borBook(string BookID, string CardID);  // Use BID & CID to specify
-    string retBook(string BookID, string CardID);  // Use BID & CID to specify
+    string borBook(string BookID, string CardID,
+                   QWidget *);  // Use BID & CID to specify
+    string retBook(string BookID, string CardID,
+                   QWidget *);  // Use BID & CID to specify
 
     string curAdmin;  // "" for logout
-    MYSQL *mysql;  // Handle
+    MYSQL *mysql;     // Handle
 
   private:
-    string mysql_hostname = "localhost";
+    string mysql_hostname = "114.55.251.25";
     string mysql_DB       = "library";
-
 
     bool connect();
     bool checkDB();
@@ -180,8 +182,9 @@ class Database {
     void recreateDB();
 
   protected:
-    string mysql_username = "root";  // Basic Authoriz
-    string mysql_passwd   = "";
+    string mysql_username = "librarian";  // Basic Authoriz
+    string mysql_passwd   = "123456";
+    string rootPasswd     = "root";  // Password for root admin
 };
 
 #endif

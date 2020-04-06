@@ -2,8 +2,10 @@
 #include "adminpad.h"
 #include "login.h"
 #include "ui_mainwindow.h"
+#include "querypad.h"
 #include <QLabel>
 #include <QMessageBox>
+#include "borret.h"
 
 extern Database myDB;
 QLabel *ptrToAdminLable;
@@ -41,8 +43,16 @@ void MainWindow::on_BTN_Admin_clicked() {
 
 void MainWindow::on_BTN_Query_clicked() {
     if (myDB.curAdmin != "") {
-        AdminPad a;
-        a.exec();
+        QueryPad q;
+        q.exec();
+    } else
+        QMessageBox::warning(this, "", "未登录");
+}
+
+void MainWindow::on_BTN_BorRet_clicked() {
+    if (myDB.curAdmin != "") {
+        BorRet b;
+        b.exec();
     } else
         QMessageBox::warning(this, "", "未登录");
 }

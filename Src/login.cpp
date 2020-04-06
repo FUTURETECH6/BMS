@@ -9,6 +9,7 @@ extern QLabel *ptrToAdminLable;
 
 Login::Login(QWidget *parent) : QDialog(parent), ui(new Ui::Login) {
     ui->setupUi(this);
+    ui->input_AdminID->setFocus();
 }
 
 Login::~Login() {

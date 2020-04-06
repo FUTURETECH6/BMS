@@ -66,6 +66,8 @@
         "variant": "cpp",
         "vector": "cpp",
         "filesystem": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "qdialog": "cpp",
+        "qmessagebox": "cpp"
     }
 }

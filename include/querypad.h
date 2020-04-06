@@ -1,9 +1,8 @@
 #ifndef QUERYPAD_H
 #define QUERYPAD_H
 
-#include <QDialog>
 #include "Database.h"
-// #include <QStandardItem>
+#include <QDialog>
 #include <QStandardItemModel>
 
 namespace Ui {
@@ -18,8 +17,8 @@ class QueryPad : public QDialog {
     ~QueryPad();
 
   public slots:
-    void on_pushBottoon_accepted();
-    void on_pushBottoon_rejected();
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 
   private:
     void resetTable();

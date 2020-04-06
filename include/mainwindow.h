@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow {
     void on_BTN_Logout_clicked();
     void on_BTN_Admin_clicked();
         void on_BTN_Query_clicked();
-    //    void on_BTN_BorRet_clicked();
+        void on_BTN_BorRet_clicked();
 
   private:
     Ui::MainWindow *ui;

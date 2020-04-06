@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>管理面板</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
@@ -41,6 +41,11 @@
      <item>
       <property name="text">
        <string>借书证删除</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>添加管理员(需要root权限)</string>
       </property>
      </item>
     </widget>

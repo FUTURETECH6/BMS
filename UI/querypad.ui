@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>994</width>
+    <height>670</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>240</y>
+     <x>570</x>
+     <y>600</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -32,8 +32,8 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>20</y>
+     <x>810</x>
+     <y>10</y>
      <width>160</width>
      <height>80</height>
     </rect>
@@ -62,7 +62,7 @@
     <item row="1" column="1">
      <widget class="QComboBox" name="orderby">
       <property name="currentText">
-       <string>书名</string>
+       <string>类别</string>
       </property>
       <item>
        <property name="text">
@@ -136,10 +136,31 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>70</y>
-     <width>256</width>
-     <height>192</height>
+     <y>120</y>
+     <width>971</width>
+     <height>461</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>30</y>
+     <width>281</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>34</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>图书查询</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

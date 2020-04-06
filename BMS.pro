@@ -28,31 +28,37 @@ LIBS += -L/usr/local/Cellar/mysql/8.0.19/lib/ -lmysqlclient
 CONFIG += c++11
 
 SOURCES += \
-        ./Src/Database.cpp\
-        adminpad.cpp \
-        insbookpad.cpp \
-        inscardpad.cpp \
-        login.cpp \
-        main.cpp \
-        mainwindow.cpp \
-        querypad.cpp
+        ./Src/Database.cpp   \
+        ./Src/adminpad.cpp   \
+        ./Src/borret.cpp     \
+        ./Src/insbookpad.cpp \
+        ./Src/inscardpad.cpp \
+        ./Src/login.cpp      \
+        ./Src/main.cpp       \
+        ./Src/mainwindow.cpp \
+        ./Src/querypad.cpp \
+        ./Src/insadminpad.cpp
 
-HEADERS += \
-        ./include/Database.h\
-        adminpad.h \
-        insbookpad.h \
-        inscardpad.h \
-        login.h \
-        mainwindow.h \
-        querypad.h
+HEADERS +=                     \
+        ./include/Database.h   \
+        ./include/adminpad.h   \
+        ./include/borret.h     \
+        ./include/insbookpad.h \
+        ./include/inscardpad.h \
+        ./include/login.h      \
+        ./include/mainwindow.h \
+        ./include/querypad.h \
+        ./include//insadminpad.h
 
 FORMS += \
-    adminpad.ui \
-    insbookpad.ui \
-    inscardpad.ui \
-    login.ui \
-    mainwindow.ui \
-    querypad.ui
+    ./UI/adminpad.ui   \
+    ./UI/borret.ui     \
+    ./UI/insbookpad.ui \
+    ./UI/inscardpad.ui \
+    ./UI/login.ui      \
+    ./UI/mainwindow.ui \
+    ./UI/querypad.ui \
+    ./UI/insadminpad.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
