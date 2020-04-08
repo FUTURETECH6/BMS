@@ -36,3 +36,6 @@ create table borrow (
         references card (cno)
         on update cascade
 )  character set=utf8;
+
+insert into book value("03580765", "Poem", "Walker Prairie", "Square", 322, "Anthony Hanson", 22.0, 99, 22);
+insert into card value("123", "cxy", );

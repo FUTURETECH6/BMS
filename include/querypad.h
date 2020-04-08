@@ -17,6 +17,7 @@ class QueryPad : public QDialog {
     ~QueryPad();
 
   public slots:
+    void on_addAttr_clicked();
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
 
@@ -26,7 +27,9 @@ class QueryPad : public QDialog {
     string strMap(QString &);
 
     Ui::QueryPad *ui;
+    QStandardItemModel *consList;
     QStandardItemModel *itemList;
+    std::vector<std::tuple<std::string, std::string, std::string>> attrList;
 };
 
 #endif  // QUERYPAD_H

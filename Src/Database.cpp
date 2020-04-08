@@ -1,13 +1,14 @@
 #include "Database.h"
-
 #include <QMessageBox>
 #include <fstream>
 #include <string>
 #include <vector>
 
+QWidget *queryPadUi;
+
 Database::Database() {
-    if ((mysql_library_init(0, NULL, NULL) == 0 &&
-         (mysql = mysql_init(NULL)) != NULL) == false)
+    if ((mysql_library_init(0, nullptr, nullptr) == 0 &&
+         (mysql = mysql_init(nullptr)) != nullptr) == false)
         return;  // Initialize connection's handle
     // if (!mysql_options(mysql, MYSQL_SET_CHARSET_NAME, "utf8"))  // Set
     // charset's encoding
@@ -32,7 +33,7 @@ Database::~Database() {
 bool Database::connect() {
     return (mysql_real_connect(mysql, mysql_hostname.c_str(),
                                mysql_username.c_str(), mysql_passwd.c_str(),
-                               NULL, 0, NULL, 0) != NULL);
+                               nullptr, 0, nullptr, 0) != nullptr);
 }
 
 bool Database::checkDB() {
@@ -83,8 +84,8 @@ bool Database::createDB() {
     command =
         "create table record(CardID char(8), BookID char(8), BorrowDate "
         "date, RetDate date, AdminID char(8), foreign key(CardID) references "
-        "card(CardID) on delete cascade, foreign key(BookID) references "
-        "book(BookID) on delete cascade, foreign key(AdminID) references "
+        "card(CardID) on update cascade, foreign key(BookID) references "
+        "book(BookID) on update cascade, foreign key(AdminID) references "
         "admin(AdminID) on delete cascade)";
     if (mysql_query(mysql, command.c_str()))  // Create table record
         return false;
@@ -109,7 +110,7 @@ void Database::error_info() {
 void Database::freeRes() {
     do {
         MYSQL_RES *pRes = mysql_store_result(mysql);
-        if (pRes != NULL)
+        if (pRes != nullptr)
             mysql_free_result(pRes);
     } while (!mysql_next_result(mysql));
 }
@@ -220,7 +221,7 @@ bool Database::deleteCard(string CardID) {
 vector<Book> *Database::queryBook(string attribute, string value,
                                   string orderby) {
     if (curAdmin == "")
-        return NULL;  // Check if is logged in
+        return nullptr;  // Check if is logged in
     string command = "select * from book where " + attribute + " like '%" +
                      value + "%' order by " + orderby;
     mysql_query(mysql, command.c_str());
@@ -230,7 +231,7 @@ vector<Book> *Database::queryBook(string attribute, string value,
 vector<Book> *Database::queryBook(string attribute, double lower, double upper,
                                   string orderby, bool isAsc) {
     if (curAdmin == "")
-        return NULL;  // Check if is logged in
+        return nullptr;  // Check if is logged in
     string command = "select * from book where " + attribute +
                      " >= " + to_string(lower) + " and " + attribute +
                      " <= " + to_string(upper) + " order by " + orderby +
@@ -240,25 +241,55 @@ vector<Book> *Database::queryBook(string attribute, double lower, double upper,
 }
 string Database::queryBook(string BookID) {
     if (curAdmin == "")
-        return NULL;  // Check if is logged in
+        return nullptr;  // Check if is logged in
     string command = "select Title from book where BookID = " + BookID;
     mysql_query(mysql, command.c_str());
     MYSQL_RES *result = mysql_store_result(mysql);
     return mysql_fetch_row(result)[0];
 }
+
+vector<Book> *
+Database::queryBookMul(vector<tuple<string, string, string>> attrList,
+                       string orderby, bool isAsc) {
+    if (curAdmin == "")
+        return nullptr;  // Check if is logged in
+    string command = "select * from book where ";
+    for (auto i = 0; i < attrList.size(); i++) {
+        if (i != 0)
+            command += " and ";
+        if (get<0>(attrList[i]) == "Year" || get<0>(attrList[i]) == "Price") {
+            command += get<0>(attrList[i]) + " >= " + get<1>(attrList[i]) +
+                       " and " + get<0>(attrList[i]) +
+                       " <= " + get<2>(attrList[i]);
+        } else {
+            command +=
+                get<0>(attrList[i]) + " like '%" + get<1>(attrList[i]) + "%' ";
+        }
+    }
+    command += " order by " + orderby;
+    command += isAsc ? " ASC" : " DESC";
+    // QMessageBox::warning(debugUi, "", QString::fromStdString(command));
+    mysql_query(mysql, command.c_str());
+    // QMessageBox::warning(debugUi, "", QString::fromStdString(command));
+    return res2Ptr(mysql_store_result(mysql));
+}
+
 /*
  * Convert MYSQL_RES to vector
  */
 vector<Book> *Database::res2Ptr(MYSQL_RES *result) {
-    if (result == NULL)
-        return NULL;
+    if (result == nullptr)
+        return nullptr;
     int rowcount = mysql_num_rows(result);  //获取行数
     // rowcount     = min(rowcount, 50);       //取前50条
 
     // Book *res     = new Book[rowcount + 1];
+
+    QMessageBox::information(queryPadUi, "",
+                             "查找到" + QString::number(rowcount) + "本书");
     static vector<Book> ret;
     ret.resize(rowcount);
-    MYSQL_ROW row = NULL;
+    MYSQL_ROW row = nullptr;
     for (int i = 0; i < rowcount; ++i) {
         row = mysql_fetch_row(result);  //获取行信息
         ret[i].reset(row[0], row[1], row[2], row[3], atoi(row[4]), row[5],
@@ -304,7 +335,7 @@ string Database::borBook(string BookID, string CardID, QWidget *ui) {
                            (lt->tm_mon + 1) * 100 + (lt->tm_mday));
 
     command = "insert into record values( '" + CardID + "',  '" + BookID +
-              "', " + BorrowDate + ", NULL, '" + curAdmin + "')";
+              "', " + BorrowDate + ", '1984-01-01', '" + curAdmin + "')";
     if (mysql_query(mysql, command.c_str()))
         return "ERROR\n";
     return "Borrow Successfully\n";
@@ -339,7 +370,7 @@ string Database::retBook(string BookID, string CardID, QWidget *ui) {
 
     command = "update record set RetDate = " + RetDate + " where CardID = '" +
               CardID + "' and BookID = '" + BookID +
-              "' and RetDate is NULL limit 1";
+              "' and RetDate = '1984-01-01' limit 1";
     if (mysql_query(mysql, command.c_str()))
         return "ERROR\n";
     return "Return Successfully\n";

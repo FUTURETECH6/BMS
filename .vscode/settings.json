@@ -68,6 +68,12 @@
         "filesystem": "cpp",
         "iostream": "cpp",
         "qdialog": "cpp",
-        "qmessagebox": "cpp"
+        "qmessagebox": "cpp",
+        "deque": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "regex": "cpp",
+        "stack": "cpp",
+        "__memory": "cpp"
     }
 }

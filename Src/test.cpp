@@ -56,8 +56,8 @@ int main() {
     // vector<Book> *p = myDB.queryBook("Category", "Textbook");
     // vector<Book> *q = myDB.queryBook("Stock", 0, 100);
 
-    myDB.borBook("71966335", "5208324");
-    myDB.retBook("71966335", "5208324");
+//     myDB.borBook("71966335", "5208324");
+//     myDB.retBook("71966335", "5208324");
 
     // Card c1("7913389", "Amanda Bradshaw", "Computer Science", "G");
     // Card c2("7913389", "Amanda Bradshaw", "Computer Science", "Student");

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>办理借书证</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">

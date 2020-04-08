@@ -3,11 +3,19 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QString>
+#include <regex>
 #include <vector>
 
+#include <QWidget>
+
 extern Database myDB;
+extern QWidget *queryPadUi;
 
 QueryPad::QueryPad(QWidget *parent) : QDialog(parent), ui(new Ui::QueryPad) {
+    consList = new QStandardItemModel;
+    // itemList       = new QStandardItemModel;
+    consList->setHorizontalHeaderItem(0, new QStandardItem("属性"));
+    consList->setHorizontalHeaderItem(1, new QStandardItem("条件"));
     ui->setupUi(this);
 }
 
@@ -15,22 +23,73 @@ QueryPad::~QueryPad() {
     delete ui;
 }
 
+void QueryPad::on_addAttr_clicked() {
+    QString raw_attr  = ui->attr->currentText();
+    QString raw_value = ui->attrValue->text();
+    string attr       = strMap(raw_attr);
+    string value      = raw_value.toStdString();
+    if (attr == "Year" || attr == "Price") {
+        regex sep(" +- +| +, +| +~ +| +， +|-|~|, +|， +| +");
+        sregex_token_iterator p(value.begin(), value.end(), sep, -1);
+        sregex_token_iterator end;
+        // vector<std::string> vec;
+        // while (p != end)
+        //     vec.emplace_back(*p++);
+        // QMessageBox::warning(this, "", QString::number(vec.size()));
+        // return;
+        string lower = *p++;
+        string upper;
+        if (p != end)
+            upper = *p;
+        else {
+            QMessageBox::warning(this, "", "参数不足！");
+            return;
+        }
+        // QMessageBox::warning(this, "", QString::fromStdString(lower));
+        // QMessageBox::warning(this, "", QString::fromStdString(upper));
+        attrList.push_back(make_tuple(attr, lower, upper));
+    } else {
+        attrList.push_back(make_tuple(attr, value, ""));
+    }
+    ui->attrTable->setModel(consList);
+    consList->setItem(attrList.size() - 1, 0, new QStandardItem(raw_attr));
+    consList->setItem(attrList.size() - 1, 1, new QStandardItem(raw_value));
+}
+
 void QueryPad::on_buttonBox_accepted() {
+    if (attrList.size() == 0) {
+        QMessageBox::warning(this, "", "还未添加查询条件");
+        return;
+    }
     QString raw_attr    = ui->attr->currentText();
     QString raw_orderby = ui->orderby->currentText();
     string attr         = strMap(raw_attr);
     string orderby      = strMap(raw_orderby);
-    vector<Book> *ptr;
 
-    if (attr == "Year" || attr == "Price") {
-        double lower = QInputDialog::getDouble(this, "", "请输入区间下界");
-        double upper = QInputDialog::getDouble(this, "", "请输入区间上界");
-        ptr          = myDB.queryBook(attr, lower, upper, orderby);
-    } else {
-        string keyword =
-            QInputDialog::getText(this, "", "请输入关键字").toStdString();
-        ptr = myDB.queryBook(attr, keyword, orderby);
-    }
+    queryPadUi = this;
+    vector<Book> *ptr;
+    if (ui->sortWay->currentText() == "升序")
+        ptr = myDB.queryBookMul(attrList, orderby, 1);
+    if (ui->sortWay->currentText() == "降序")
+        ptr = myDB.queryBookMul(attrList, orderby, 0);
+
+    attrList.resize(0);
+    delete consList;
+    consList = new QStandardItemModel;
+    consList->setHorizontalHeaderItem(0, new QStandardItem("属性"));
+    consList->setHorizontalHeaderItem(1, new QStandardItem("条件"));
+    ui->attrTable->setModel(consList);
+
+    // if (attr == "Year" || attr == "Price") {
+    //     double lower = QInputDialog::getDouble(this, "", "请输入区间下界");
+    //     double upper = QInputDialog::getDouble(this, "", "请输入区间上界");
+    //     ptr          = myDB.queryBook(attr, lower, upper, orderby);
+    // } else {
+    //     string keyword =
+    //         QInputDialog::getText(this, "", "请输入关键字").toStdString();
+    //     ptr = myDB.queryBook(attr, keyword, orderby);
+    // }
+
     if (ptr->size() == 0) {
         QMessageBox::warning(this, "", "没有找到你要的书");
         return;

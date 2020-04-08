@@ -17,11 +17,15 @@ class BorRet : public QDialog {
     ~BorRet();
 
   public slots:
+    void on_CardID_editingFinished();
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
 
   private:
+    void refereshTable();
+
     Ui::BorRet *ui;
+    QStandardItemModel *itemList;
 };
 
 #endif  // BORRET_H

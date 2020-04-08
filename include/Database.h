@@ -161,6 +161,8 @@ class Database {
     vector<Book> *queryBook(string attribute, double lower, double upper,
                             string orderby, bool isAsc = 0);  // ASC
     string queryBook(string BookID);  // Find Title of the book
+    vector<Book> *queryBookMul(vector<tuple<string, string, string>>, string,
+                               bool isAsc);
     vector<Book> *res2Ptr(MYSQL_RES *result);
 
     // BorRet

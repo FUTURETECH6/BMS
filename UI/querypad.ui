@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>图书查询</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -32,27 +32,71 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>810</x>
+     <x>640</x>
      <y>10</y>
-     <width>160</width>
-     <height>80</height>
+     <width>321</width>
+     <height>102</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>查询属性</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="attr">
+      <item>
+       <property name="text">
+        <string>类别</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>书名</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>出版社</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>年份</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>作者</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>价格</string>
+       </property>
+      </item>
      </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
        <string>排序依据</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="attrValue"/>
+    </item>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="addAttr">
+      <property name="text">
+       <string>Add</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>查询属性</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -96,38 +140,28 @@
       </item>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="attr">
+    <item row="1" column="3">
+     <widget class="QComboBox" name="sortWay">
       <item>
        <property name="text">
-        <string>类别</string>
+        <string>升序</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>书名</string>
+        <string>降序</string>
        </property>
       </item>
-      <item>
-       <property name="text">
-        <string>出版社</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>年份</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>作者</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>价格</string>
-       </property>
-      </item>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>排序方式</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
      </widget>
     </item>
    </layout>
@@ -136,9 +170,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>120</y>
+     <y>170</y>
      <width>971</width>
-     <height>461</height>
+     <height>411</height>
     </rect>
    </property>
   </widget>
@@ -158,6 +192,37 @@
    </property>
    <property name="text">
     <string>图书查询</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QTableView" name="attrTable">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>221</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>10</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>19</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>查询条件</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

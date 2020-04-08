@@ -26,8 +26,11 @@ void AdminPad::on_pushButton_clicked() {
     } else if (ui->select->currentText() == "批量入库") {
         QString pwd = QFileDialog::getOpenFileName(this, tr("Open file"), " ",
                                                    tr("All file(*.*)"));
-        // myDB.insertBook(pwd.toStdString());
-        QMessageBox::warning(this, "", pwd);
+        QMessageBox::warning(this, "", "路径是" + pwd);
+        if (myDB.insertBook(pwd.toStdString()))
+            QMessageBox::information(this, "", "批量入库成功");
+        else
+            QMessageBox::warning(this, "", "批量入库失败");
         this->close();
     } else if (ui->select->currentText() == "借书证办理") {
         insCardPad i;

@@ -36,7 +36,7 @@ SOURCES += \
         ./Src/login.cpp      \
         ./Src/main.cpp       \
         ./Src/mainwindow.cpp \
-        ./Src/querypad.cpp \
+        ./Src/querypad.cpp   \
         ./Src/insadminpad.cpp
 
 HEADERS +=                     \
@@ -47,7 +47,7 @@ HEADERS +=                     \
         ./include/inscardpad.h \
         ./include/login.h      \
         ./include/mainwindow.h \
-        ./include/querypad.h \
+        ./include/querypad.h   \
         ./include//insadminpad.h
 
 FORMS += \
@@ -57,7 +57,7 @@ FORMS += \
     ./UI/inscardpad.ui \
     ./UI/login.ui      \
     ./UI/mainwindow.ui \
-    ./UI/querypad.ui \
+    ./UI/querypad.ui   \
     ./UI/insadminpad.ui
 
 # Default rules for deployment.

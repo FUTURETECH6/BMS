@@ -6,11 +6,11 @@
                 "${workspaceFolder}/**",
                 "${vcpkgRoot}/x64-osx/include",
                 "${workspaceFolder}/include/",
-                "${workspaceFolder}/",
-                "${workspaceFolder}/Release",
+                "${workspaceFolder}/build_debug",
                 "/usr/local/opt/qt/include",
                 "/usr/local/opt/qt/include/QtCore",
                 "/usr/local/opt/qt/include/QtGui",
+                "/usr/local/opt/qt/include/QtWidgets",
                 "/usr/local/Cellar/mysql/8.0.19/include/mysql/"
             ],
             "defines": [],
