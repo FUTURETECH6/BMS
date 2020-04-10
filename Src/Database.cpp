@@ -82,8 +82,8 @@ bool Database::createDB() {
         return false;
 
     command =
-        "create table record(CardID char(8), BookID char(8), BorrowDate "
-        "date, RetDate date, AdminID char(8), foreign key(CardID) references "
+        "create table record(CardID char(20), BookID char(20), BorrowDate "
+        "date, RetDate date, AdminID char(20), foreign key(CardID) references "
         "card(CardID) on update cascade, foreign key(BookID) references "
         "book(BookID) on update cascade, foreign key(AdminID) references "
         "admin(AdminID) on delete cascade)";
@@ -363,7 +363,7 @@ string Database::retBook(string BookID, string CardID, QWidget *ui) {
         return "Canceled\n";
 
     string RetDate;
-    time_t now = time(0);
+    time_t now = time(nullptr);
     tm *lt     = localtime(&now);                          // Get local time
     RetDate    = to_string((lt->tm_year + 1900) * 10000 +  // Convert
                         (lt->tm_mon + 1) * 100 + (lt->tm_mday));

@@ -175,7 +175,7 @@ class Database {
     MYSQL *mysql;     // Handle
 
   private:
-    string mysql_hostname = "114.55.251.25";
+    string mysql_hostname = "114.55.251.25";  // MySQL server's hostname
     string mysql_DB       = "library";
 
     bool connect();
@@ -183,7 +183,6 @@ class Database {
     bool createDB();
     void recreateDB();
 
-  protected:
     string mysql_username = "librarian";  // Basic Authoriz
     string mysql_passwd   = "123456";
     string rootPasswd     = "root";  // Password for root admin
