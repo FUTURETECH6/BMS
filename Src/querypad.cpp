@@ -29,7 +29,7 @@ void QueryPad::on_addAttr_clicked() {
     string attr       = strMap(raw_attr);
     string value      = raw_value.toStdString();
     if (attr == "Year" || attr == "Price") {
-        regex sep("\\s*-\\s*|\\s*-\\s*|\\s*,\\s*|\\s*，\\s*");
+        regex sep("\\s*-\\s*|\\s*~\\s*|\\s*,\\s*|\\s*，\\s*");
         sregex_token_iterator p(value.begin(), value.end(), sep, -1);
         sregex_token_iterator end;
         // vector<std::string> vec;
